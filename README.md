@@ -22,6 +22,9 @@ caddy_1.crowdsec.api_key: ${API_KEY}
 caddy_1.crowdsec.appsec_url: http://${API_URL}:7422
 ```
 
+I'm using a different port for the `api_url` because I had a conflict on the default 8080.
+
+
 A logging snippet is also created to allow one to create access logs for crowdsec to read. By using a snippet with args, the name of the file can be specified per container.
 
 ```
