@@ -1,0 +1,76 @@
+
+services:
+  caddy:
+    #image: lucaslorentz/caddy-docker-proxy
+    #specify own build to include caddy-docker-proxy as well as crowdsec module
+    container_name: caddy
+    build: ./caddybuild
+    image: kmobs/caddyproxycrowdsec
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - caddy
+      - socket
+    volumes:
+      - /home/kmobs/dockerconfigs/caddy:/data
+      - logs:/var/log/caddy
+    restart: unless-stopped
+    environment:
+      DOCKER_HOST: tcp://socket-proxy:2375 
+    labels:
+      caddy_0.email: ${EMAIL}
+      #Used a different port as I had a conflict on the default 8080
+      caddy_1.crowdsec.api_url: http://${API_URL}:24444
+      caddy_1.crowdsec.api_key: ${API_KEY}
+      caddy_1.crowdsec.appsec_url: http://${API_URL}:7422
+      # Create a snippet for enabling access logs. Can also import from a RO socket if you prefer
+      caddy_2: (logging)
+      caddy_2.log.output: file /var/log/caddy/{args[0]}.access.log
+      caddy_2.log.output.roll_size: 10MiB
+      caddy_2.log.output.roll_keep_for: 168h
+      
+  crowdsec:
+    container_name: crowdsec
+    image: crowdsecurity/crowdsec
+    restart: unless-stopped
+    ports: 
+      - 24444:8080
+      - 7422:7422
+    environment:
+      COLLECTIONS: "crowdsecurity/caddy"
+      GID: "${GID-1000}"
+    depends_on:
+      - 'caddy'
+    volumes:
+      - /home/kmobs/dockerconfigs/caddy/crowdsec:/etc/crowdsec
+      - /home/kmobs/dockerconfigs/caddy/crowdsec:/var/lib/crowdsec/data/
+      - logs:/var/log/caddy
+
+  socket-proxy:
+    container_name: socket-proxy
+    image: lscr.io/linuxserver/socket-proxy:latest
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /run
+    networks:
+      - socket
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      CONTAINERS: 1
+      SERVICES: 1
+      NETWORKS: 1
+      CONFIGS: 1
+      TASKS: 1
+      NODES: 1
+      INFO: 1
+
+networks:
+  caddy:
+    external: true
+  socket:
+
+volumes:
+  logs:

@@ -1,0 +1,8 @@
+# Example block for a container to add them to your reverse proxy and secure them
+
+caddy: subdomain.example.com
+caddy.route.reverse_proxy: "{{upstreams 80}}"
+caddy.route.crowdsec:
+caddy.route.appsec:
+# Replace example_name with what you want the access file to be named
+caddy.import: logging example_name
