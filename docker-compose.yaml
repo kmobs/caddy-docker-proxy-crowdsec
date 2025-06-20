@@ -8,8 +8,6 @@ services:
     image: kmobs/caddyproxycrowdsec
     depends_on:
       socket-proxy:
-        condition: "service_healthy"
-        restart: true
     ports:
       - 80:80
       - 443:443
@@ -53,15 +51,13 @@ services:
 
   socket-proxy:
     container_name: socket-proxy
-    image: 11notes/socket-proxy
+    image: tecnativa/socket-proxy
     user: "0:0" # Set to ame UID/GID as the owner of the socket
     restart: unless-stopped
-    read_only: true
     networks:
       - socket
     volumes:
       - /run/docker.sock:/run/docker.sock:ro
-      - socket-proxy:/run/proxy
     environment:
       CONTAINERS: 1
       SERVICES: 1
@@ -78,4 +74,3 @@ networks:
 
 volumes:
   logs:
-  socket-proxy:
