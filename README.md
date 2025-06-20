@@ -6,7 +6,7 @@ Looking around, there didn't seem to be a good guide using caddy with crowdsec a
 ## Setup
 The setup consists of a custom caddy build that includes both [caddy-docker-proxy](https://github.com/lucaslorentz/caddy-docker-proxy) as well as [caddy-crowdsec-bouncer](https://github.com/hslatman/caddy-crowdsec-bouncer). 
 
-In addition, it uses a readonly [socket-proxy](https://docs.linuxserver.io/images/docker-socket-proxy/).
+In addition, it uses a readonly [socket-proxy](https://github.com/Tecnativa/docker-socket-proxy).
 
 Adding the block from the example file will add the container to your reverse proxy and protect it with crowdsec.
 
