@@ -49,15 +49,15 @@ services:
 
   socket-proxy:
     container_name: socket-proxy
-    image: lscr.io/linuxserver/socket-proxy:latest
+    image: 11notes/socket-proxy
+    user: "0:0" # Set to ame UID/GID as the owner of the socket
     restart: unless-stopped
     read_only: true
-    tmpfs:
-      - /run
     networks:
       - socket
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /run/docker.sock:/run/docker.sock:ro
+      - socket-proxy:/run/proxy
     environment:
       CONTAINERS: 1
       SERVICES: 1
@@ -74,3 +74,4 @@ networks:
 
 volumes:
   logs:
+  socket-proxy:
