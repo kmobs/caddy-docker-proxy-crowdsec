@@ -6,6 +6,10 @@ services:
     container_name: caddy
     build: ./caddybuild
     image: kmobs/caddyproxycrowdsec
+    depends_on:
+      socket-proxy:
+        condition: "service_healthy"
+        restart: true
     ports:
       - 80:80
       - 443:443
