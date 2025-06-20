@@ -15,7 +15,8 @@ services:
       - caddy
       - socket
     volumes:
-      - /home/kmobs/dockerconfigs/caddy:/data
+      # set caddy path
+      - /path/to/caddy/data:/data
       - logs:/var/log/caddy
     restart: unless-stopped
     environment:
@@ -45,8 +46,9 @@ services:
     depends_on:
       - 'caddy'
     volumes:
-      - /home/kmobs/dockerconfigs/caddy/crowdsec:/etc/crowdsec
-      - /home/kmobs/dockerconfigs/caddy/crowdsec:/var/lib/crowdsec/data/
+      # For the acquis.yaml
+      - /path/to/crowdsec:/etc/crowdsec
+      - /path/to/crowdsec/data:/var/lib/crowdsec/data/
       - logs:/var/log/caddy
 
   socket-proxy:
