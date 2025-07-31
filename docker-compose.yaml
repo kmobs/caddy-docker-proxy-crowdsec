@@ -72,6 +72,7 @@ services:
       TASKS: 1
       NODES: 1
       INFO: 1
+      SESSION: 1
 
 networks:
   caddy:
