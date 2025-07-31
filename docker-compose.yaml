@@ -32,7 +32,11 @@ services:
       caddy_2.log.output: file /var/log/caddy/{args[0]}.access.log
       caddy_2.log.output.roll_size: 10MiB
       caddy_2.log.output.roll_keep_for: 168h
-      
+      caddy_3: (internal-only)
+      caddy_3.@external.not: remote_ip private_ranges
+      caddy_3.handle: "@external"
+      caddy_3.handle.abort:
+
   crowdsec:
     container_name: crowdsec
     image: crowdsecurity/crowdsec

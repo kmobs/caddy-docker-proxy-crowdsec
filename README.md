@@ -61,5 +61,6 @@ labels:
   type: appsec
 ```
 
+I've also added an internal only snippet that you can use if you only want a service to be available internally. You shouldn't have to pull the full crowdsec logging, but if you want to have both for some reason, can use `_01` imports.
 
 Hopefully this helps folks setup crowdsec and maybe make their network a little more secure. 
