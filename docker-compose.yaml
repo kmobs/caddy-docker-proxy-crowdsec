@@ -73,6 +73,7 @@ services:
       NODES: 1
       INFO: 1
       SESSION: 1
+      EXEC: 1
 
 networks:
   caddy:
